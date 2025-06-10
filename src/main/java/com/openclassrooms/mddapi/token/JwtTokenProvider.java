@@ -1,8 +1,7 @@
 package com.openclassrooms.mddapi.token;
 
 import com.openclassrooms.mddapi.entity.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,5 +28,31 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+        return Long.parseLong(claims.getSubject());
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException ex) {
+            // Signature JWT invalide
+        } catch (MalformedJwtException ex) {
+            // Token JWT mal formé
+        } catch (ExpiredJwtException ex) {
+            // Token JWT expiré
+        } catch (UnsupportedJwtException ex) {
+            // Token JWT non supporté
+        } catch (IllegalArgumentException ex) {
+            // Claims JWT vide
+        }
+        return false;
     }
 }
