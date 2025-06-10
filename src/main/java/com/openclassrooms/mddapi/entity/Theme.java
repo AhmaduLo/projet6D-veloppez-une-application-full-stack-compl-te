@@ -7,33 +7,25 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.concurrent.Flow;
+
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Theme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String email;
+    private String name;
 
-    @Column(unique = true)
-    private String username;
-
-    private String password;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
     private List<Article> articles;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions;
 }
-
