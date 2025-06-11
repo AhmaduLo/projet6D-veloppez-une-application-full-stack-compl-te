@@ -15,16 +15,9 @@ public class ThemeMapper {
         return new ThemeDto(
                 theme.getId(),
                 theme.getName(),
-                theme.getArticles() != null ?
-                        theme.getArticles().stream()
-                                .map(article -> article.getId())
-                                .collect(Collectors.toList()) :
-                        null,
-                theme.getSubscriptions() != null ?
-                        theme.getSubscriptions().stream()
-                                .map(sub -> sub.getId())
-                                .collect(Collectors.toList()) :
-                        null
+                theme.getDescription(),
+                null,
+                null
         );
     }
 
@@ -33,7 +26,17 @@ public class ThemeMapper {
         return Theme.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                // Les articles et subscriptions ne sont pas définis ici
+                .description(dto.getDescription())
                 .build();
+    }
+
+    public ThemeDto toShortDto(Theme theme) {
+        return new ThemeDto(
+                theme.getId(),
+                theme.getName(),
+                theme.getDescription(),
+                null,
+                null
+        );
     }
 }
