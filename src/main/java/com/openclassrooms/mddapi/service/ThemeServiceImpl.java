@@ -35,7 +35,7 @@ public class ThemeServiceImpl implements ThemeService{
     public List<ThemeDto> getAllThemes() {
         // Conversion des entités Theme en DTO
         return themeRepository.findAll().stream()
-                .map(t -> new ThemeDto(t.getId(), t.getName(), null, null))
+                .map(themeMapper::toShortDto)
                 .collect(Collectors.toList());
     }
 
@@ -44,6 +44,6 @@ public class ThemeServiceImpl implements ThemeService{
         // Recherche du thème, ou exception si non trouvé
         Theme t = themeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Thème introuvable"));
-        return new ThemeDto(t.getId(), t.getName(), null, null);
+        return themeMapper.toShortDto(t);
     }
 }

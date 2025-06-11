@@ -23,6 +23,9 @@ public class Theme {
 
     private String name;
 
+    @Column(length = 500)
+    private String description;
+
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
     private List<Article> articles;
 
