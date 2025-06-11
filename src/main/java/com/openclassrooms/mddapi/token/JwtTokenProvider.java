@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -22,7 +24,11 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole());
+
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(user.getId().toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
@@ -35,7 +41,7 @@ public class JwtTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        return Long.parseLong(claims.getSubject());
+        return (Long) claims.get("role");
     }
 
     public boolean validateToken(String token) {
