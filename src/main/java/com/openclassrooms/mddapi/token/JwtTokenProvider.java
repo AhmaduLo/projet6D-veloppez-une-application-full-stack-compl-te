@@ -24,6 +24,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
+        // Création des données personnalisées à inclure dans le token (ici, le rôle)
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole());
 
@@ -33,15 +34,23 @@ public class JwtTokenProvider {
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+                .compact();// Génération finale du token
     }
 
     public Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
+                .getBody();// Récupération du corps du token (les claims)
+        return Long.parseLong(claims.getSubject());// L'ID est stocké dans "subject"
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
                 .getBody();
-        return (Long) claims.get("role");
+        return (String) claims.get("role"); // ✅ le rôle est dans les claims
     }
 
     public boolean validateToken(String token) {

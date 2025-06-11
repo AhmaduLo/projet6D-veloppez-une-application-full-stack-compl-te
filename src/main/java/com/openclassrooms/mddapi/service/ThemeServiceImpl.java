@@ -22,17 +22,20 @@ public class ThemeServiceImpl implements ThemeService{
             throw new RuntimeException("Ce thème existe déjà");
         }
 
+        // Construction d'un nouvel objet Theme à partir du DTO
         Theme theme = Theme.builder()
                 .name(themeDto.getName())
                 .build();
 
         Theme saved = themeRepository.save(theme);
 
+        // Retourne un DTO avec les données du thème enregistré
         return new ThemeDto(saved.getId(), saved.getName(), null, null);
     }
 
     @Override
     public List<ThemeDto> getAllThemes() {
+        // Conversion des entités Theme en DTO
         return themeRepository.findAll().stream()
                 .map(t -> new ThemeDto(t.getId(), t.getName(), null, null))
                 .collect(Collectors.toList());
@@ -40,6 +43,7 @@ public class ThemeServiceImpl implements ThemeService{
 
     @Override
     public ThemeDto getThemeById(Long id) {
+        // Recherche du thème, ou exception si non trouvé
         Theme t = themeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Thème introuvable"));
         return new ThemeDto(t.getId(), t.getName(), null, null);

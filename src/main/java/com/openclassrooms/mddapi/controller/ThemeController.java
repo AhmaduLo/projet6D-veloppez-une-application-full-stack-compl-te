@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.dto.ThemeDto;
 import com.openclassrooms.mddapi.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ public class ThemeController {
     @Autowired
     private ThemeService themeService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ThemeDto> createTheme(@Valid @RequestBody ThemeDto dto) {
         ThemeDto created = themeService.createTheme(dto);

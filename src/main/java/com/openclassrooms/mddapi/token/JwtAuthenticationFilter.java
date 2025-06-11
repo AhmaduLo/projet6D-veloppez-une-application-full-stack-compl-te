@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.token;
 
-import com.openclassrooms.mddapi.token.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +30,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getJwtFromRequest(request);
 
+        // Vérifie si le token est non vide et valide
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Long userId = jwtTokenProvider.getUserIdFromToken(token);
-            String role = String.valueOf(jwtTokenProvider.getUserIdFromToken(token));
+            String role = String.valueOf(jwtTokenProvider.getRoleFromToken(token));
 
             // Crée l'objet UserDetails avec le rôle
             var userDetails = new org.springframework.security.core.userdetails.User(
@@ -54,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    //Extrait le token JWT depuis l'en-tête Authorization
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
         if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {

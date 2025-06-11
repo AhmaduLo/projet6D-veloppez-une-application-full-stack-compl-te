@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = passwordEncoder.encode(userRegisterDto.getPassword());
 
         // Créer un utilisateur
-        User user = User.builder().username(userRegisterDto.getUsername()).email(userRegisterDto.getEmail()).password(hashedPassword).role("ADMIN").build();
+        User user = User.builder().username(userRegisterDto.getUsername()).email(userRegisterDto.getEmail()).password(hashedPassword).role("USER").build();
 
         // Sauvegarder
         User savedUser = userRepository.save(user);
