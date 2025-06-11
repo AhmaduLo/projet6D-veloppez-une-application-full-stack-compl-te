@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.dto.ThemeDto;
 import com.openclassrooms.mddapi.entity.Theme;
+import com.openclassrooms.mddapi.mapper.ThemeMapper;
 import com.openclassrooms.mddapi.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,21 +17,18 @@ public class ThemeServiceImpl implements ThemeService{
     @Autowired
     private ThemeRepository themeRepository;
 
+    @Autowired
+    private ThemeMapper themeMapper;
+
     @Override
     public ThemeDto createTheme(ThemeDto themeDto) {
         if (themeRepository.existsByName(themeDto.getName())) {
             throw new RuntimeException("Ce thème existe déjà");
         }
 
-        // Construction d'un nouvel objet Theme à partir du DTO
-        Theme theme = Theme.builder()
-                .name(themeDto.getName())
-                .build();
-
+        Theme theme = themeMapper.toEntity(themeDto);
         Theme saved = themeRepository.save(theme);
-
-        // Retourne un DTO avec les données du thème enregistré
-        return new ThemeDto(saved.getId(), saved.getName(), null, null);
+        return themeMapper.toDto(saved);
     }
 
     @Override
