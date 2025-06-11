@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = passwordEncoder.encode(userRegisterDto.getPassword());
 
         // Créer un utilisateur
-        User user = User.builder().username(userRegisterDto.getUsername()).email(userRegisterDto.getEmail()).password(hashedPassword).build();
+        User user = User.builder().username(userRegisterDto.getUsername()).email(userRegisterDto.getEmail()).password(hashedPassword).role("USER").build();
 
         // Sauvegarder
         User savedUser = userRepository.save(user);
@@ -117,7 +117,6 @@ public class UserServiceImpl implements UserService {
         boolean hasChanges = false;
 
 
-
         if (!userUpdateDto.getUsername().equals(user.getUsername())) {
             if (userRepository.findByUsername(userUpdateDto.getUsername()).isPresent()) {
                 throw new RuntimeException("Nom d'utilisateur déjà utilisé");
@@ -159,6 +158,7 @@ public class UserServiceImpl implements UserService {
         Long userId = jwtTokenProvider.getUserIdFromToken(token);
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
+
     //Convertit une entité User en UserDto
     private UserDto convertToDto(User user) {
         return UserDto.builder().id(user.getId()).username(user.getUsername()).email(user.getEmail()).build();

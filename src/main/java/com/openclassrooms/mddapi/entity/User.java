@@ -35,5 +35,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions;
+
+    @Column(nullable = false)
+    private String role;
 }
 
