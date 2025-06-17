@@ -17,7 +17,10 @@ public class ArticleDto {
     private String content;
     private LocalDateTime createdAt;
     private Long authorId;
+    private String authorUsername;
     private Long themeId;
     private List<CommentDto> comments;
+
+
 }
 

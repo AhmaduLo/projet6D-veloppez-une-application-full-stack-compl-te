@@ -18,7 +18,6 @@ public class UserUpdateDto {
     @Email(message = "L'email doit être valide")
     private String email;
 
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
     @ValidPassword
     private String password;
 }

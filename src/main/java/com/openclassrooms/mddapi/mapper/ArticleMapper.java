@@ -41,6 +41,7 @@ public class ArticleMapper {
                 article.getContent(),
                 article.getCreatedAt(),
                 article.getAuthor().getId(),
+                article.getAuthor().getUsername(),
                 article.getTheme().getId(),
                 commentDtos
         );
