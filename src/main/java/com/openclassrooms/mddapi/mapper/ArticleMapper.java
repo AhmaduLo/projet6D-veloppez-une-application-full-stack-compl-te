@@ -29,7 +29,8 @@ public class ArticleMapper {
                             comment.getContent(),
                             comment.getCreatedAt(),
                             comment.getAuthor().getId(),
-                            article.getId()
+                            article.getId(),
+                            comment.getAuthor().getUsername()
                     ))
                     .collect(Collectors.toList());
         }
@@ -43,6 +44,7 @@ public class ArticleMapper {
                 article.getAuthor().getId(),
                 article.getAuthor().getUsername(),
                 article.getTheme().getId(),
+                article.getTheme().getName(),
                 commentDtos
         );
     }

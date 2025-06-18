@@ -19,6 +19,7 @@ public class ArticleDto {
     private Long authorId;
     private String authorUsername;
     private Long themeId;
+    private String themeName;
     private List<CommentDto> comments;
 
 
